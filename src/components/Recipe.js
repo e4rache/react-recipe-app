@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import Ingredients from "./Ingredients";
+import Loader from "./Loader";
 
 const API_KEY = "ad27e3c95e25f2d07bd72228eda43bd7";
 const API_URL = `https://cors-anywhere.herokuapp.com/https://food2fork.com/api/get?key=${API_KEY}&rId=`;
@@ -58,9 +59,7 @@ class Recipe extends Component {
         </div>
       </div>
     ) : (
-      <div>
-        <p>Please wait ...</p>
-      </div>
+      <Loader />
     );
   }
 }

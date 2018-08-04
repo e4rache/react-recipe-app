@@ -3,15 +3,18 @@ import "./App.css";
 
 import Form from "./components/Form";
 import Recipes from "./components/Recipes";
+import Loader from "./components/Loader";
 
 const API_KEY = "ad27e3c95e25f2d07bd72228eda43bd7";
 
 class App extends Component {
   state = {
-    recipes: []
+    recipes: undefined,
+    isLoading: false
   };
 
   getRecipe = async e => {
+    this.setState({ isLoading: true, recipes: undefined });
     e.preventDefault();
 
     const keyWord = e.target.elements.recipename.value;
@@ -21,12 +24,12 @@ class App extends Component {
     );
 
     const data = await api_call.json();
-
-    this.setState({ recipes: data.recipes });
-    console.log(this.state.recipes);
+    console.log("App.getRecipe() - data.recipes", data.recipes);
+    this.setState({ isLoading: false, recipes: data.recipes });
   };
 
   render() {
+    console.log("App.render() - this.state.recipes", this.state.recipes);
     return (
       <div className="App">
         <header className="App-header">
@@ -54,7 +57,12 @@ class App extends Component {
           </span>
         </header>
         <Form getRecipe={this.getRecipe} />
-        <Recipes recipes={this.state.recipes} />
+        {this.state.recipes !== undefined ? (
+          <Recipes recipes={this.state.recipes} />
+        ) : (
+          ""
+        )}
+        {this.state.isLoading ? <Loader /> : ""}
       </div>
     );
   }
